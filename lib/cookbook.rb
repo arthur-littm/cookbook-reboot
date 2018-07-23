@@ -18,20 +18,25 @@ class Cookbook
     write_csv
   end
 
+  def find(index)
+    @recipes[index]
+  end
+
   def all
     return @recipes
   end
 
   def load_csv
     CSV.foreach(@csv_file) do |row|
-      @recipes << Recipe.new(row[0], row[1])
+      boolean = row[2] == "true"
+      @recipes << Recipe.new(row[0], row[1], boolean)
     end
   end
 
   def write_csv
     CSV.open(@csv_file, "w") do |csv|
       @recipes.each do |recipe|
-        csv << [recipe.name, recipe.description]
+        csv << [recipe.name, recipe.description, recipe.done?]
       end
     end
   end
